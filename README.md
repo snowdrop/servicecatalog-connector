@@ -1,1 +1,1 @@
-# spring-cloud-kubernetes-service-catalog-connector
+# Spring Cloud Kubernetes Service Catalog Connector

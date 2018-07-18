@@ -1,0 +1,4 @@
+me.snowdrop.cloud.servicecatalog.connector.MysqlServiceInfoCreator
+me.snowdrop.cloud.servicecatalog.connector.OracleServiceInfoCreator
+me.snowdrop.cloud.servicecatalog.connector.PostgressServiceInfoCreator
+me.snowdrop.cloud.servicecatalog.connector.SqlServerServiceInfoCreator

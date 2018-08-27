@@ -24,6 +24,8 @@ import org.springframework.cloud.service.ServiceInfo;
 import org.springframework.cloud.service.UriBasedServiceInfoCreator;
 import org.springframework.cloud.service.common.MysqlServiceInfo;
 import org.springframework.cloud.util.UriInfo;
+import java.util.stream.Stream;
+import java.util.Base64;
 
 import java.util.Map;
 import java.util.Optional;
@@ -38,6 +40,7 @@ public abstract class RelationalDatabaseServiceInfoCreator<S extends ServiceInfo
     protected static final String DB_TYPE = "DB_TYPE";
 
     protected final ServiceCatalogClient client;
+    protected final Base64.Decoder decoder = Base64.getDecoder();
 
     public RelationalDatabaseServiceInfoCreator() {
         this(ServiceCatalogClientRef.getClient());
@@ -54,34 +57,64 @@ public abstract class RelationalDatabaseServiceInfoCreator<S extends ServiceInfo
     public abstract S createServiceInfo(String id, String uri);
 
 
- 	@Override
-	public boolean accept(ServiceInstance instance) {
-		return true;
-	}
+    @Override
+    public boolean accept(ServiceInstance instance) {
+        Optional<Secret> secret = toSecrets(instance).findFirst();
+        return secret.isPresent() &&
+            secret.get().getData() != null &&
+            !secret.get().getData().isEmpty();
+    }
 
     public S createServiceInfo(ServiceInstance instance) {
-
-       String binding = client.serviceBindings().inNamespace(instance.getMetadata().getNamespace())
-                .withField("spec.serviceInstanceRef.name", instance.getMetadata().getName())
-                .list()
-                .getItems()
-                .stream()
+       String binding = toBindings(instance)
                 .map(b -> b.getMetadata().getName())
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No binding found for service instance: " + instance.getMetadata().getName() + " in namespace: " + instance.getMetadata().getNamespace()+ "."));
 
         Secret secret = client.serviceBindings().inNamespace(instance.getMetadata().getNamespace()).withName(binding).getSecret();
 
-        Map<String, String> data = secret.getStringData();
+        Map<String, String> data = secret.getData();
+        if (data == null || data.isEmpty()) {
+            throw new IllegalArgumentException("Secret: " + secret.getMetadata().getName() + " is empty!");
+        }
+
         UriInfo info = new UriInfo(getScheme(),
-                data.get(DB_HOST),
-                Integer.parseInt(data.getOrDefault(DB_PORT, getDefaultPort())),
-                data.get(DB_USER),
-                data.get(DB_PASSWORD),
-                data.get(DB_NAME),
-                null);
+                                   getValue(data, DB_HOST),
+                                   Integer.parseInt(getValue(data, DB_PORT, getDefaultPort())),
+                                   getValue(data, DB_USER),
+                                   getValue(data, DB_PASSWORD),
+                                   getValue(data, DB_NAME),
+                                   null);
 
         return createServiceInfo(instance.getMetadata().getName(), info.toString());
     }
 
+    protected Stream<ServiceBinding> toBindings(ServiceInstance instance) {
+        return client.serviceBindings().inNamespace(instance.getMetadata().getNamespace())
+            .list()
+            .getItems()
+            .stream()
+            .filter(b -> b.getSpec().getInstanceRef().getName().equals(instance.getMetadata().getName()));
+    }
+
+    protected Stream<Secret> toSecrets(ServiceInstance instance) {
+        return client.serviceBindings().inNamespace(instance.getMetadata().getNamespace())
+            .list()
+            .getItems()
+            .stream()
+            .filter(b -> b.getSpec().getInstanceRef().getName().equals(instance.getMetadata().getName()))
+            .map(b -> client.serviceBindings().inNamespace(instance.getMetadata().getNamespace()).withName(b.getMetadata().getName()).getSecret());
+    }
+
+    protected String getValue(Map<String, String> data, String key) {
+        return getValue(data, key, null);
+    }
+
+    protected String getValue(Map<String, String> data, String key, String defaultValue) {
+        String encoded = data.get(key);
+        if (encoded == null) {
+            return defaultValue;
+        }
+        return new String(decoder.decode(encoded));
+    }
 }

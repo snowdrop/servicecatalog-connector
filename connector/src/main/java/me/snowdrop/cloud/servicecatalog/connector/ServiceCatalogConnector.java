@@ -61,7 +61,8 @@ public class ServiceCatalogConnector extends AbstractCloudConnector<ServiceInsta
 
     @Override
     public boolean isInMatchingCloud() {
-        return environment.getEnvValue("KUBERNETES_PORT") != null;
+        return true;
+        //        return environment.getEnvValue("KUBERNETES_PORT") != null;
     }
 
     @Override

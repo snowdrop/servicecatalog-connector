@@ -14,6 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.cloud.service.ServiceInfo;
+import java.util.Base64;
 
 import static me.snowdrop.cloud.servicecatalog.connector.RelationalDatabaseServiceInfoCreator.DB_HOST;
 import static me.snowdrop.cloud.servicecatalog.connector.RelationalDatabaseServiceInfoCreator.DB_NAME;
@@ -27,6 +28,8 @@ public class AbsractServiceCatalogConnectorTest {
 
     protected ServiceInstance instance;
     protected ServiceBinding binding;
+
+    protected Base64.Encoder encoder = Base64.getEncoder();
 
     @Before
     public void setup() {
@@ -61,7 +64,7 @@ public class AbsractServiceCatalogConnectorTest {
                 .always();
 
         server.expect().get()
-                .withPath("/apis/servicecatalog.k8s.io/v1beta1/namespaces/test/servicebindings?fieldSelector=spec.serviceInstanceRef.name%3Dservice-1")
+                .withPath("/apis/servicecatalog.k8s.io/v1beta1/namespaces/test/servicebindings")
                 .andReturn(200, new ServiceBindingListBuilder().addToItems(binding).build()).always();
 
         server.expect().get()
@@ -76,10 +79,10 @@ public class AbsractServiceCatalogConnectorTest {
                         .withNewMetadata()
                         .withName("secret-1")
                         .endMetadata()
-                        .addToStringData(DB_HOST, "myhost")
-                        .addToStringData(DB_NAME, "mydb")
-                        .addToStringData(DB_USER, "root")
-                        .addToStringData(DB_PASSWORD, "pass")
+                           .addToData(DB_HOST, new String(encoder.encode("myhost".getBytes())))
+                           .addToData(DB_NAME, new String(encoder.encode("mydb".getBytes())))
+                           .addToData(DB_USER, new String(encoder.encode("root".getBytes())))
+                           .addToData(DB_PASSWORD, new String(encoder.encode("mypass".getBytes())))
                         .build())
                 .always();
 

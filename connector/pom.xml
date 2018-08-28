@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>me.snowdrop</groupId>
-        <artifactId>spring-cloud-kubernetes-servicecatalog-connector-project</artifactId>
+        <artifactId>servicecatalog-connector-project</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>me.snowdrop</groupId>
-    <artifactId>spring-cloud-kubernetes-service-catalog-connector</artifactId>
+    <artifactId>servicecatalog-connector</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>Snowdrop :: Service Catalog :: Spring Cloud Connector :: Connector</name>

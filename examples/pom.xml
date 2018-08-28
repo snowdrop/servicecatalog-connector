@@ -3,18 +3,19 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>me.snowdrop</groupId>
-        <artifactId>spring-cloud-kubernetes-servicecatalog-conector-project</artifactId>
+        <artifactId>servicecatalog-connector-project</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>me.snowdrop</groupId>
-    <artifactId>spring-cloud-kubernetes-service-catalog-connector-examples</artifactId>
+    <artifactId>servicecatalog-connector-examples</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>Snowdrop :: Service Catalog :: Spring Cloud Connector :: Examples</name>
 
     <modules>
-      <module>simple</module>
+      <module>service-info-printer</module>
+        <module>simple-database</module>
     </modules>
     
 </project>

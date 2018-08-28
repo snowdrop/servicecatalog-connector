@@ -1,4 +1,4 @@
-package me.snowdrop;
+package me.snowdrop.servicecatalog.connector.examples;
 
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;

@@ -22,7 +22,7 @@ Using either svcat or the console create a postgres instance.
 ### Build and deploy the application
 From the command line:
 
-    mvn clean package fabric8:deploy
+    mvn clean package fabric8:resources fabric8:build fabric8:deploy
 
 This will create the docker image and kubernetes/openshift resources required and also deploy to cluster.
 

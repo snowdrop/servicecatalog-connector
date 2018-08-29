@@ -27,6 +27,6 @@ public class CloudConfig extends AbstractCloudConfig {
 
     @Bean
     public DataSource dataSource() {
-       return this.connectionFactory().service("dh-postgresql-apb-zcvv5", DataSource.class);
+       return this.connectionFactory().service("mydb", DataSource.class);
     }
 }

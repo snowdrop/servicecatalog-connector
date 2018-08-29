@@ -3,13 +3,13 @@
     <parent>
         <groupId>me.snowdrop</groupId>
         <artifactId>servicecatalog-connector-project</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <groupId>me.snowdrop</groupId>
     <artifactId>servicecatalog-connector-examples</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>Snowdrop :: Service Catalog :: Spring Cloud Connector :: Examples</name>
 
     <modules>

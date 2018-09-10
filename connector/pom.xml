@@ -3,13 +3,13 @@
     <parent>
         <groupId>me.snowdrop</groupId>
         <artifactId>servicecatalog-connector-project</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.2</version>
     </parent>
 
     <groupId>me.snowdrop</groupId>
     <artifactId>servicecatalog-connector</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>Snowdrop :: Service Catalog :: Spring Cloud Connector :: Connector</name>
 
     <dependencies>

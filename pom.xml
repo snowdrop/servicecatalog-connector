@@ -9,7 +9,7 @@
     <groupId>me.snowdrop</groupId>
     <artifactId>servicecatalog-connector-project</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>Snowdrop :: Service Catalog :: Spring Cloud Connector :: Project</name>
 
 
